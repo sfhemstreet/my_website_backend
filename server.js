@@ -10,9 +10,9 @@ const app = express();
 // body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+// enable cors
 const corsOptions = {
-    origin: 'http://localhost:3000'
+    origin: process.env.ORIGIN_WEBSITE
 }
 app.use(cors(corsOptions));
 
@@ -24,10 +24,10 @@ app.post('/email', (req,res) => {
     else if(!regexCheck(name, 'special') || !regexCheck(email,'email') || !regexCheck(title, 'special') || !regexCheck(body, 'special')){
         res.status(400).json('Very Bad Input');
     }else{
-        sgMail.setApiKey('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');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
-            to: 'sfhemstreet@gmail.com',
-            from: 'spencerhemstreet@gmail.com',
+            to: process.env.MY_TO_EMAIL,
+            from: process.env.MY_FROM_EMAIL,
             subject: `Contact Form Submission ${email} ${title}`,
             text: body,
         };
@@ -36,4 +36,4 @@ app.post('/email', (req,res) => {
     }
 });
 
-app.listen(process.env.PORT || 8000);
+app.listen(process.env.PORT);

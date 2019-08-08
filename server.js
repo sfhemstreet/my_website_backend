@@ -12,7 +12,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // enable cors
 const corsOptions = {
-    origin: process.env.ORIGIN_WEBSITE
+    origin: process.env.ORIGIN_WEBSITE,
+    optionsSuccessStatus: 200,
+    methods: "POST"
 }
 app.use(cors(corsOptions));
 

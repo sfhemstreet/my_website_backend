@@ -10,9 +10,17 @@ const app = express();
 // body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const whitelist = process.env.ORIGIN_WEBSITE.split(' ');
 // enable cors
 const corsOptions = {
-    origin: process.env.ORIGIN_WEBSITE,
+    origin: (origin, callback) => {
+        if (whitelist.indexOf(origin) !== -1) {
+          callback(null, true)
+        } else {
+          callback(new Error('Not allowed by CORS'))
+        }
+    },
     optionsSuccessStatus: 200,
     methods: "POST"
 }
